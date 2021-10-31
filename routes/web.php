@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Task;
-
+use App\Http\Controllers\TodoController;
 
 
 /*
@@ -16,6 +16,9 @@ use App\Models\Task;
 |
 */
 
+Route::post('someurl', [TodoController::class, "someMethod"]);
+Route::get('someurl', [TodoController::class, "get"]);
+
 Route::get('/', function () {
     $task = Task::all();
 
@@ -23,6 +26,4 @@ Route::get('/', function () {
     return view('index', [
         'tasks' => $task
     ]);
-
-
 });

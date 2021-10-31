@@ -102,14 +102,19 @@
     font-family: "Poppins", sans-serif;
 }
 
+.add-modal {
+    position: absolute;
+    /*bottom: 0;*/
+    top: 8vh;
+    right: 3%;
+}
+
 .add-modal .trigger-modal button {
     height: 60px;
     width: 60px;
     background-color: rgb(24, 24, 24);
     border: none;
-    float: right;
     border-radius: 100%;
-    margin-top: -230px;
 }
 
 .add-modal .trigger-modal button:hover {
