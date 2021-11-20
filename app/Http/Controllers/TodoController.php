@@ -28,13 +28,21 @@ class TodoController extends Controller
 
             if (isset($requestQuery["filter"])) {
                 $filter = $requestQuery["filter"];
-                if ($filter != "") {
-                    $taskQuery = $taskQuery->where("category", $filter)->page;
+                if ($filter != "" && $filter != "all") {
+                    $taskQuery = $taskQuery->where("category", $filter);
+                }
+            }
+
+            if (isset($requestQuery["searchKey"])) {
+                $searchKey = $requestQuery["searchKey"];
+                if ($searchKey != "") {
+                    $taskQuery = $taskQuery->where([['title', 'LIKE', '%' . $searchKey . '%']]);
                 }
             }
         }
 
-        $task = $taskQuery->where("isDeleted", 0)->orderByDesc("created_at")->offset($offset)->limit($limit)->get();
+        $taskQuery = $taskQuery->where("isDeleted", 0)->orderByDesc("created_at")->offset($offset)->limit($limit);
+        $task = $taskQuery->get();
         return view('index', [
             'tasks' => $task
         ]);

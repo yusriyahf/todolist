@@ -24,9 +24,7 @@
 </head>
 
 <body>
-
     @include('componens.header')
-        {{-- @dd($tasks) --}}
         <div class="content mt-3">
             <div class="row grid" id="task-list">
                 @if (count($tasks) > 0)
@@ -64,11 +62,12 @@
                     @include("componens.deleteModal")
 
                 @else
-                    {{-- <h1>kosong cok</h1> --}}
+                    <h1>kosong cok</h1>
                 @endif
 
             </div>
-            <button class="btn btn-dark" type="button" onclick="loadMoreData()">load more</button>
+            <button class="btn btn-dark" type="button" id="prev" onclick="loadPrevData()"><< load before</button>
+            <button class="btn btn-dark" type="button" id="next" onclick="loadMoreData()">load more >></button>
             <ul id="pagin"></ul>
         </div>
 
@@ -96,27 +95,91 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
         <script>
+            let queryArr = ["page=1", "filter=all", "searchKey="]
             let page = 1
-
             let urlBase = 'http://localhost:8000/'
-
-        function loadMoreData() {
-            let query = window.location.search
-            if (query) {
-                query = query.replace("?", "")
-                query = query.split("=")
-
-                let page = parseInt(query[1])+1
-                // console.log();
-                load(urlBase+"?page="+page)
-            } else {
-                load(urlBase+"?page=2")
+            setup()
+            function setup() {
+                let query = window.location.search
+                if (query) {
+                    query = query.replace("?", "")
+                    query = query.split("&")
+                    for (let i = 0; i < query.length; i++) {
+                        const element = query[i];
+                        if (query[i].includes("page")) {
+                            let qVal = query[i].split("=")[1]
+                            if (qVal === "1") {
+                                document.getElementById("prev").disabled = true
+                            }
+                            queryArr[0] = query[i]
+                        } else if (query[i].includes("filter")) {
+                            let qVal = query[i].split("=")[1]
+                            if (qVal === "") {
+                                document.getElementById("all").classList.add("active")
+                            } else {
+                                document.getElementById(qVal).classList.add("active")
+                            }
+                            queryArr[1] = query[i]
+                        } else if (query[i].includes("searchKey")) {
+                            document.getElementById("searchInput").value = query[i].split("=")[1]
+                            queryArr[2] = query[i]
+                        }
+                    }
+                } else{
+                    document.getElementById("all").classList.add("active")
+                    document.getElementById("prev").disabled = true;
+                }
             }
-        }
 
-        function load(url){
-            window.location.href = url
-        }
+            function loadMoreData() {
+                let query = window.location.search
+                if (query) {
+                    query = query.replace("?", "")
+                    query = query.split("=")
+                    let page = parseInt(query[1])+ 1
+                    queryArr[0] = "page="+page
+                    load()
+                } else {
+                    queryArr[0] = "page=2"
+                    load()
+                }
+            }
+
+            function loadPrevData() {
+                let query = window.location.search
+                if (query) {
+                    query = query.replace("?", "")
+                    query = query.split("=")
+                    let page = parseInt(query[1])- 1
+                    queryArr[0] = "page="+page
+                    load()
+                } else {
+                    queryArr[0] = "page=2"
+                    load()
+                }
+            }
+
+            function search() {
+                if (event.keyCode == 13) {
+                    let valueSearch = document.getElementById("searchInput").value
+                    queryArr[2] = "searchKey="+valueSearch
+                    load()
+                }
+            }
+
+            function filter(key) {
+                if (key !== "all") {
+                    queryArr[1] = "filter="+key
+                } else {
+                    queryArr[1] = "filter="
+                }
+                load()
+            }
+
+            function load(){
+                console.log(queryArr);
+                window.location.href = urlBase+"?"+queryArr.join("&")
+            }
         </script>
 </body>
 

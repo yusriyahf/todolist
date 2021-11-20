@@ -41,6 +41,10 @@ body {
     transition: 0.5s;
 }
 
+.sub-header .active {
+    background-color: black;
+}
+
 .sub-header .filter:active .filter.active {
     background-color: aquamarine;
 }

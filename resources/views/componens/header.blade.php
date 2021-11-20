@@ -8,7 +8,7 @@
                 <img src="img/001.jpeg" class="rounded-circle float-end" alt="...">
             </div>
             <div class="col-lg-5 col-12">
-                <input autocomplete="off" class="form-control me-2" id="searchInput" type="text" data-role="input" data-search-button-click="custom" data-on-search-button-click="search()">
+                <input autocomplete="off" class="form-control me-2" id="searchInput" type="text" data-role="input" data-search-button-click="custom" onkeydown="search()">
             </div>
         </div>
     </div>
@@ -21,32 +21,32 @@
         </div>
         <div class="row mt-2 filter-button-group">
             <div class="col-md-2 col-6 mb-3">
-                <button class="filter" data-filter="*" onclick="myfunc()" id="btn0">
+                <button class="filter" onclick="filter('all')" id="all">
                     <h1>All</h1>
                 </button>
             </div>
             <div class="col-md-2 col-6 mb-3">
-                <button class="filter" data-filter=" .Game">
+                <button class="filter" onclick="filter('Game')" id="Game">
                     <h1>Game</h1>
                 </button>
             </div>
             <div class="col-md-2 col-6 mb-3">
-                <button class="filter" data-filter=".School">
+                <button class="filter" onclick="filter('School')" id="School">
                     <h1>School</h1>
                 </button>
             </div>
             <div class="col-md-2 col-6 mb-3">
-                <button class="filter" data-filter=".Birthday">
+                <button class="filter" onclick="filter('Birthday')" id="Birthday">
                     <h1>Birthday</h1>
                 </button>
             </div>
             <div class="col-md-2 col-6">
-                <button class="filter" data-filter=".Party">
+                <button class="filter" onclick="filter('Meeting')" id="Meeting">
                     <h1>Meeting</h1>
                 </button>
             </div>
             <div class="col-md-2 col-6">
-                <button class="filter" data-filter=".Done">
+                <button class="filter" onclick="filter('Done')" id="Done">
                     <h1>Done</h1>
                 </button>
             </div>
