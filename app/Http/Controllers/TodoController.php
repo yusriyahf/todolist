@@ -7,13 +7,37 @@ use App\Models\ListModel;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
+use App\Models\Task;
 
 
 class TodoController extends Controller
 {
-    public function get(Request $request): Request
+    public function get(Request $request)
     {
-        return $request;
+        $requestQuery = $request->query();
+        $taskQuery = DB::table('list');
+        $offset = 0;
+        $limit = 10;
+        if (count($requestQuery) > 0) {
+            if (isset($requestQuery["page"])) {
+                $page = $requestQuery["page"];
+                $pageInt = $page + 0;
+                $offset = $pageInt * 10 - 10;
+                $limit = $limit + $offset;
+            }
+
+            if (isset($requestQuery["filter"])) {
+                $filter = $requestQuery["filter"];
+                if ($filter != "") {
+                    $taskQuery = $taskQuery->where("category", $filter)->page;
+                }
+            }
+        }
+
+        $task = $taskQuery->where("isDeleted", 0)->orderByDesc("created_at")->offset($offset)->limit($limit)->get();
+        return view('index', [
+            'tasks' => $task
+        ]);
     }
 
     public function someMethod(Request $request)
@@ -45,7 +69,6 @@ class TodoController extends Controller
         $listModel->category = $request->input('category');
         $listModel->end_date = $request->input('end_date');
         $listModel->save();
-        echo("asuu");
-
+        echo ("asuu");
     }
 }

@@ -17,17 +17,7 @@ use App\Http\Controllers\TodoController;
 */
 
 Route::post('someurl', [TodoController::class, "someMethod"]);
-Route::get('someurl', [TodoController::class, "get"]);
-
-Route::get('/', function () {
-    $task = Task::all();
-
-
-    return view('index', [
-        'tasks' => $task
-    ]);
-});
-
+Route::get('/', [TodoController::class, "get"]);
 Route::delete('/task/{id}', function ($id) {
     $task = Task::findOrFail($id);
 
