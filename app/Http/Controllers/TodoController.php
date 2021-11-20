@@ -7,45 +7,12 @@ use App\Models\ListModel;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
-use App\Models\Task;
-
 
 class TodoController extends Controller
 {
-    public function get(Request $request)
+    public function get(Request $request): Request
     {
-        $requestQuery = $request->query();
-        $taskQuery = DB::table('list');
-        $offset = 0;
-        $limit = 10;
-        if (count($requestQuery) > 0) {
-            if (isset($requestQuery["page"])) {
-                $page = $requestQuery["page"];
-                $pageInt = $page + 0;
-                $offset = $pageInt * 10 - 10;
-                $limit = $limit + $offset;
-            }
-
-            if (isset($requestQuery["filter"])) {
-                $filter = $requestQuery["filter"];
-                if ($filter != "" && $filter != "all") {
-                    $taskQuery = $taskQuery->where("category", $filter);
-                }
-            }
-
-            if (isset($requestQuery["searchKey"])) {
-                $searchKey = $requestQuery["searchKey"];
-                if ($searchKey != "") {
-                    $taskQuery = $taskQuery->where([['title', 'LIKE', '%' . $searchKey . '%']]);
-                }
-            }
-        }
-
-        $taskQuery = $taskQuery->where("isDeleted", 0)->orderByDesc("created_at")->offset($offset)->limit($limit);
-        $task = $taskQuery->get();
-        return view('index', [
-            'tasks' => $task
-        ]);
+        return $request;
     }
 
     public function someMethod(Request $request)
