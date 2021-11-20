@@ -27,3 +27,21 @@ Route::get('/', function () {
         'tasks' => $task
     ]);
 });
+
+Route::delete('/task/{id}', function ($id) {
+    $task = Task::findOrFail($id);
+
+    $task->isDeleted = TRUE;
+    $task->save();
+
+    return redirect('/');
+});
+
+Route::get('/search/{val}', function ($val) {
+    $task = Task::where([
+        ['title', 'LIKE', '%' . $val . '%'],
+        ['isDeleted', '==', FALSE],
+    ])->get();
+
+    return json_encode($task);
+});

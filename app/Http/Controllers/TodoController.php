@@ -22,10 +22,12 @@ class TodoController extends Controller
 
         $listModel->title = $request->input('title');
         $listModel->description = $request->input('description');
+        $listModel->category = $request->input('category');
         $listModel->end_date = $request->input('end_date');
         $listModel->isDeleted = 0;
         $listModel->save();
-        echo("asuu");
+
+        return redirect("/");
     }
 
 
@@ -40,13 +42,10 @@ class TodoController extends Controller
 
         $listModel->title = $request->input('title');
         $listModel->desciption = $request->input('desciption');
+        $listModel->category = $request->input('category');
         $listModel->end_date = $request->input('end_date');
         $listModel->save();
         echo("asuu");
-//        $title =
-//        $desciption = $request->input('description');
-//        $start_date = $request->input('start_date');
-//        $end_date = $request->input('end_date');
-//        $data = array('title' => $title, "description" => $desciption, "start_date" => $start_date, "end_date" => $end_date);
+
     }
 }
